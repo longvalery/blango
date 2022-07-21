@@ -1,0 +1,18 @@
+<small>By
+    {% if post.author == request.user %}
+        <strong>me</strong>
+    {% else %}
+        {% if post.author.email %}
+            <a href="mailto:{{ post.author.email }}">
+        {% endif %}
+            {% if post.author.first_name and post.author.last_name %}
+                {{ post.author.first_name }} {{ post.author.last_name }}
+            {% else %}
+                {{ post.author.username }}
+            {% endif %}
+        {% if post.author.email %}
+            </a>
+        {% endif %}
+    {% endif %}
+    on {{ post.published_at|date:"M, d Y" }}
+</small>
