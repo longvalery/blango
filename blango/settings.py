@@ -19,6 +19,12 @@ import dj_database_url
 
 
 class Dev(Configuration):
+    PASSWORD_HASHERS = [
+      'django.contrib.auth.hashers.Argon2PasswordHasher',
+      'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+      'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+      'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+                       ]
 
     ADMINS = [("rva", "domino-sender@mail.ru"), ("Valery", "longvalery@gmail.com")]
     DJANGO_ADMINS="rva,domino-sender@mail.ru;Valery,longvalery@gmail.com"
@@ -70,7 +76,9 @@ class Dev(Configuration):
     ## DEBUG = True
     DEBUG = values.BooleanValue(True)
     ##DEBUG = False
-    ALLOWED_HOSTS = ["cargopassage-gilbertswim-8000.codio.io"]
+    ALLOWED_HOSTS = ["cargopassage-gilbertswim-8000.codio.io",
+                     "ricardobutton-visiblebundle-8000.codio.io",
+                    ]
     
 
     X_FRAME_OPTIONS = 'ALLOW-FROM ' + os.environ.get('CODIO_HOSTNAME') + '-8000.codio.io'
