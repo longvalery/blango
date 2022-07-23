@@ -5,12 +5,24 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from blog.forms import CommentForm
 import logging
+from django.http import HttpResponse
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie
+from django.views.decorators.vary import vary_on_headers
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 # Create your views here.
+# cache  5 minute
+
+#@cache_page(300)
+## @vary_on_headers("Cookie")
+#@vary_on_cookie
 def index(request):
+
+    #return HttpResponse(str(request.user).encode("ascii"))
+
     # posts = Post.objects.filter(published_at__lte=timezone.now())
     posts = Post.objects.all
     cnt = Post.objects.all().count()

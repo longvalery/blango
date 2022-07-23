@@ -18,7 +18,50 @@ from configurations import values
 import dj_database_url
 
 
+import platform
+DEV_MODE=(platform.node() == 'salutecombine-stadiumbison')
+print("platform.node():",platform.node())
+print("platform.uname()",platform.uname())
+print("DEV_MODE:",DEV_MODE)
+
 class Dev(Configuration):
+#
+## cache to Memory (outside application)
+## need @sudo apt install memcached"
+## ## Don't work
+#    CACHES = {
+#    "default": {
+#        "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
+#        "LOCATION": "127.0.0.1:11211",
+#               }
+#             }
+
+## cache to FileSystem
+#    CACHES = {
+#    "default": {
+#        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+#        "LOCATION": "/var/tmp/django_cache",
+#               }
+#             }
+
+
+##  cache to Memory (by Django )
+    CACHES = {
+        "default": {
+          "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+## The LOCATION setting is not required, unless you have multiple local-memory caches. In which case, it should be unique for each one.          
+          "LOCATION": "unique-snowflake",
+                   }
+             }
+
+## Dummy cache
+#    CACHES = {
+#          "default": {
+#          "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+#                     }
+#             }
+
+
     PASSWORD_HASHERS = [
       'django.contrib.auth.hashers.Argon2PasswordHasher',
       'django.contrib.auth.hashers.PBKDF2PasswordHasher',
@@ -76,7 +119,8 @@ class Dev(Configuration):
     ## DEBUG = True
     DEBUG = values.BooleanValue(True)
     ##DEBUG = False
-    ALLOWED_HOSTS = ["cargopassage-gilbertswim-8000.codio.io",
+    ALLOWED_HOSTS = [u"*",
+                     "cargopassage-gilbertswim-8000.codio.io",
                      "ricardobutton-visiblebundle-8000.codio.io",
                     ]
     
@@ -206,7 +250,17 @@ class Prod(Dev):
     DEBUG = False
     ##SECRET_KEY = values.SecretValue("any-hard-coded-value")
     ALLOWED_HOSTS = values.ListValue(["localhost", "0.0.0.0", ".codio.io"])
-### ALLOWED_HOSTS=localhost,0.0.0.0,.codio.io python3 manage.py runserver 0.0.0.0:8000    
+### ALLOWED_HOSTS=localhost,0.0.0.0,.codio.io python3 manage.py runserver 0.0.0.0:8000 
+## Cashe to Database   
+## Need  "python manage.py createcachetable" before use
+    CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "my_cache_table",
+               }
+             }
+
+
 
 
 ##################################################

@@ -19,7 +19,29 @@ from django.urls import path
 import blog.views
 from django.conf import settings
 import logging
+from django.core.cache import caches
 
+# cache is the equivalent of caches["default"]/our default_cache variable
+default_cache = caches["default"]
+# post_pk = 1
+# p = Post.objects.get(pk=1)
+# cache.set(f"post_{post_pk}", p, 30)
+# Notice we’re using the Post object’s primary key as part of its cache key, so we can be sure the cache key is unique.
+# Then, let’s get Post back out of the cache (although if it’s been more than 30 seconds since you’ve set it, you’ll need to put it back into the cache otherwise this won’t work)
+# p1 = cache.get(f"post_{post_pk}")
+# print(p == p1) # Out: True
+# Now wait 30 seconds, and try to retrieve the Post object from the cache again.
+# print(cache.get(f"post_{post_pk}")) # Out: None
+
+# If we don’t want to wait for the timeout to elapse, then we can just use the delete() method to remove an item from the cache. For example, if a Post was updated we could remove its old, cached version. delete() takes two arguments, the key to delete and the cache key version, which is optional. It will return True if the value existed in the cache prior to deletion, or False if it did not.
+# cache.delete(f"post_{post_pk}")
+
+# If we try to fetch a value that doesn’t exist in the cache, we’ll get back None, so how can we differentiate between a value that’s not in the cache and a stored None value? The trick is to pass a sentinel object as the default to get(). If you get the same sentinel back, you know the key wasn’t set. If you get None, you’ll know the value None was set.
+# sentinel = object()
+# cache.set("current_user", None, 30)
+# u = cache.get("current_user", sentinel)
+# print(u is None)     #Out: True
+# print(u is sentinel) #Out: False
 
 
 logging.warning('Watch out!')  # will print a message to the console
