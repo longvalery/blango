@@ -18,6 +18,43 @@ from django.urls import path
 # other imports
 import blog.views
 from django.conf import settings
+import logging
+
+
+
+logging.warning('Watch out!')  # will print a message to the console
+logging.info('I told you so')  # will not print anything
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger.debug('----start messages-----') 
+logger.debug("This is a debug message")
+logger.info("This is an info message")
+logger.warning("This is a warning message")
+logger.error("This is an error message")
+logger.critical("This is a critical message")
+
+
+try:
+    answer = 9 / 0
+    print(f"The answer is: {answer}")
+    raise_exception()
+except ZeroDivisionError:
+    logger.exception("!!!! A divide by zero exception occured")
+
+username="rva"
+email="domino-sender@mail.ru"
+logger.log(logging.DEBUG, "Created user %s with email %s", username, email)
+logger.debug('----stop messages-----') 
+
+# For performance reasons, pre-interpolated strings shouldn’t be passed to the logging function.
+# For example, these two lines would produce the same log output:
+##logger.debug("Created user %s with email %s" % (username, email))
+##logger.debug("Created user %s with email %s", username, email)
+# However, in the first usage, the string is formatted and then sent to the logging function. If the logging level of the logger is not DEBUG then the message will be discarded.
+# In the second call, if the logger level is not DEBUG then the message is discarded before it’s interpolated, thus preventing the (admittedly small) overhead of this operation.
+
 print(f"Time zone: {settings.TIME_ZONE}")
 
 urlpatterns = [
