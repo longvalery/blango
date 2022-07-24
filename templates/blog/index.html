@@ -9,6 +9,7 @@
         {% col %}
             <h3>{{ post.title }}</h3>
             {% include "blog/post-byline.html" %}
+            <p>{{ post.created_at }} edit {{ post.modified_at }} published {{ post.published_at }} </p>
             <p>{{ post.summary }}</p>
             <p>
                 ({{ post.content|wordcount }} words)

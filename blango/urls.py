@@ -13,13 +13,22 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include, re_path
+# from django.contrib.staticfiles import views
 # other imports
 import blog.views
 from django.conf import settings
 import logging
 from django.core.cache import caches
+
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.static import serve
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+from .settings import DEBUG
 
 # cache is the equivalent of caches["default"]/our default_cache variable
 default_cache = caches["default"]
@@ -68,6 +77,7 @@ except ZeroDivisionError:
 username="rva"
 email="domino-sender@mail.ru"
 logger.log(logging.DEBUG, "Created user %s with email %s", username, email)
+
 logger.debug('----stop messages-----') 
 
 # For performance reasons, pre-interpolated strings shouldn’t be passed to the logging function.
@@ -84,4 +94,32 @@ urlpatterns = [
     # other patterns
     path("", blog.views.index) ,
     path("post/<slug>/", blog.views.post_detail, name="blog-post-detail"),
-              ]
+    path("ip/", blog.views.get_ip),
+              ]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+if DEBUG:
+  # print("DEBUG:",DEBUG)
+  # print("STATIC_ROOT:",settings.STATIC_ROOT)
+  # print("STATIC_URL:",settings.STATIC_URL)
+  #print("re_path(r'^static/(?P<path>.*)$', serve): ",re_path(r'^static/(?P<path>.*)$', serve))
+  urlpatterns += staticfiles_urlpatterns() 
+  # urlpatterns += [
+  #      re_path(r'^static/(?P<path>.*)$', serve, {
+  #          'document_root': settings.STATIC_ROOT, })     
+  #             ] 
+
+  print("staticfiles_urlpatterns() :",staticfiles_urlpatterns())              
+## urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+  print("static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) :"
+     ,static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))
+  print("static :"
+     ,static("/--/", document_root="/+++/"))     
+  import debug_toolbar
+  urlpatterns += [
+        path("__debug__/", include(debug_toolbar.urls)),
+               ]
+
+print(urlpatterns)
+
+

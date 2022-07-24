@@ -145,9 +145,11 @@ class Dev(Configuration):
      "blog",
      "crispy_forms",
      "crispy_bootstrap5",
+     "debug_toolbar",
                      ]
 
     MIDDLEWARE = [
+     "debug_toolbar.middleware.DebugToolbarMiddleware",   
      'django.middleware.security.SecurityMiddleware',
      'django.contrib.sessions.middleware.SessionMiddleware',
      'django.middleware.common.CommonMiddleware',
@@ -155,8 +157,13 @@ class Dev(Configuration):
      'django.contrib.auth.middleware.AuthenticationMiddleware',
      'django.contrib.messages.middleware.MessageMiddleware',
  #   'django.middleware.clickjacking.XFrameOptionsMiddleware',
+      
                  ]
+    INTERNAL_IPS = ["192.168.11.179"]
 
+    DEBUG_TOOLBAR_CONFIG = {
+       "SHOW_TOOLBAR_CALLBACK" : lambda request: True,
+                           }
     ROOT_URLCONF = 'blango.urls'
 
     TEMPLATES = [
@@ -237,6 +244,15 @@ class Dev(Configuration):
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
     STATIC_URL = '/static/'
+    ## STATIC_URL = "https://preludecredit-baboongallery-8000.codio.io/static/"
+    ## STATIC_ROOT = os.path.join(BASE_DIR, "static")
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
+
+    STATICFILES_FINDERS = (
+          'django.contrib.staticfiles.finders.FileSystemFinder',
+          'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+                          )
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -244,7 +260,9 @@ class Dev(Configuration):
     DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+print("INTERNAL_IPS - %s" % Dev.INTERNAL_IPS)
 
+print("STATIC_URL - %s" % Dev.STATIC_URL)
 
 class Prod(Dev):
     DEBUG = False
@@ -264,7 +282,6 @@ class Prod(Dev):
 
 
 ##################################################
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -384,7 +401,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
+#STATIC_ROOT = os.path.join(BASE_DIR, "static")
+#STATICFILES_DIRS = []
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

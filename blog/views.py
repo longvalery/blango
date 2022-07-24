@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.utils import timezone
+from datetime import datetime
 from blog.models import Post
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
@@ -22,11 +23,17 @@ logger.setLevel(logging.DEBUG)
 def index(request):
 
     #return HttpResponse(str(request.user).encode("ascii"))
+    logger.log(logging.DEBUG, "datetime.now() : %s", datetime.now())
+    #posts = Post.objects.filter(created_at__lte=datetime.now())
+    posts = Post.objects.filter(created_at__lte=timezone.now()).select_related("author") \
+    #   .only("title", "summary", "content", "author", "published_at", "slug")
+    #    .defer("created_at", "modified_at")
 
-    # posts = Post.objects.filter(published_at__lte=timezone.now())
-    posts = Post.objects.all
-    cnt = Post.objects.all().count()
+    ##posts = Post.objects.all
+    cnt = posts.count()
+    ## cnt = Post.objects.all().count()
     ## print("posts",type(posts),"", cnt)
+
     logger.debug("Got %d posts", cnt)
     return render(request, "blog/index.html", {"posts": posts})
 
@@ -53,3 +60,6 @@ def post_detail(request, slug):
         request, "blog/post-detail.html", {"post": post, "comment_form": comment_form}
     )    
     
+def get_ip(request):
+  from django.http import HttpResponse
+  return HttpResponse(request.META['REMOTE_ADDR'])

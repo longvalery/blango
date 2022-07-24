@@ -10,7 +10,9 @@ def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blango.settings')
 
-    DEV_MODE=(platform.node() == 'salutecombine-stadiumbison')
+    #DEV_MODE=(platform.node() == 'salutecombine-stadiumbison')
+    DEV_MODE=(platform.release()== '5.4.0-1080-aws')
+
     if DEV_MODE :
        os.environ.setdefault("DJANGO_CONFIGURATION", "Dev")
     else :
