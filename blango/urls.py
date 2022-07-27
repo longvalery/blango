@@ -27,8 +27,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+import blango_auth.views
 
 from .settings import DEBUG
+
+from django_registration.backends.activation.views import RegistrationView
+from blango_auth.forms import BlangoRegistrationForm
+
+
 
 # cache is the equivalent of caches["default"]/our default_cache variable
 default_cache = caches["default"]
@@ -92,7 +98,18 @@ default_cache = caches["default"]
 urlpatterns = [
     path('admin/', admin.site.urls),
     # other patterns
+    path("accounts/", include("django.contrib.auth.urls")),
+    path(
+        "accounts/register/",
+        RegistrationView.as_view(form_class=BlangoRegistrationForm),
+        name="django_registration_register",
+    ),
+    path('accounts/', include('django_registration.backends.activation.urls')),
+    path("accounts/profile/", blango_auth.views.profile, name="profile"),
     path("", blog.views.index) ,
+    path("accounts/index/", blog.views.index, name="index") ,
+    path("index/", blog.views.index) ,
+    path('accounts/', include('django_registration.backends.one_step.urls')),
     path("post/<slug>/", blog.views.post_detail, name="blog-post-detail"),
     path("ip/", blog.views.get_ip),
               ]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
@@ -104,6 +121,9 @@ if DEBUG:
   # print("STATIC_URL:",settings.STATIC_URL)
   #print("re_path(r'^static/(?P<path>.*)$', serve): ",re_path(r'^static/(?P<path>.*)$', serve))
   urlpatterns += staticfiles_urlpatterns() 
+  import debug_toolbar
+  urlpatterns += [path("__debug__/", include(debug_toolbar.urls)),]
+
   # urlpatterns += [
   #      re_path(r'^static/(?P<path>.*)$', serve, {
   #          'document_root': settings.STATIC_ROOT, })     
@@ -115,11 +135,7 @@ if DEBUG:
 ##      ,static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))
 ##   print("static :"
 ##      ,static("/--/", document_root="/+++/"))     
-  import debug_toolbar
-  urlpatterns += [
-        path("__debug__/", include(debug_toolbar.urls)),
-               ]
-
+  
 ## print(urlpatterns)
 
 

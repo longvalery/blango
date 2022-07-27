@@ -10,7 +10,8 @@ class BlangoUserManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
         if not email:
             raise ValueError("Email must be set")
-        email = self.normalize_email(email)
+        email = self.normalize_email(email
+             , widget=forms.EmailInput(attrs={"class":"form-control mb-3 my-20",'placeholder': 'Email'}))
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)

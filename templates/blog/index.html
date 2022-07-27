@@ -3,6 +3,8 @@
 {% load static %}
 
 {% block content %}
+ {% if user.is_authenticated %}
+
     <h2>Blog Posts</h2>
     {% for post in posts %}
     {% row "border-bottom" %}
@@ -18,4 +20,10 @@
         {% endcol %}
     <!-- {% endrow %} -->
     {% endfor %}
+ {% else %}
+ <p>Your account doesn't have access to this page. To proceed,
+        please login with an account that has access.</p>
+      
+        <p>Please login to see this page.</p>   
+ {% endif %}   
 {% endblock %}

@@ -26,6 +26,12 @@ import dj_database_url
 
 class Dev(Configuration):
 
+# Django Registration has the ability to disable registration by adding REGISTRATION_OPEN = False to your settings.py. If that’s done, then the registration_closed.html template will be shown instead of the registration form.    
+    REGISTRATION_OPEN = True
+    ACCOUNT_ACTIVATION_DAYS = 7
+## fo    
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
     AUTH_USER_MODEL = "blango_auth.User"
 #
 ## cache to Memory (outside application)
@@ -269,6 +275,7 @@ print("STATIC_URL - %s" % Dev.STATIC_URL)
 
 class Prod(Dev):
     DEBUG = False
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     ##SECRET_KEY = values.SecretValue("any-hard-coded-value")
     ALLOWED_HOSTS = values.ListValue(["localhost", "0.0.0.0", ".codio.io"])
 ### ALLOWED_HOSTS=localhost,0.0.0.0,.codio.io python3 manage.py runserver 0.0.0.0:8000 
@@ -281,6 +288,30 @@ class Prod(Dev):
                }
              }
 
+# Application definition
+
+    INSTALLED_APPS = [
+     'django.contrib.admin',
+     'django.contrib.auth',
+     'django.contrib.contenttypes',
+     'django.contrib.sessions',
+     'django.contrib.messages',
+     'django.contrib.staticfiles',
+     "blango_auth",
+     "blog",
+     "crispy_forms",
+     "crispy_bootstrap5",
+                     ]             
+    MIDDLEWARE = [
+     'django.middleware.security.SecurityMiddleware',
+     'django.contrib.sessions.middleware.SessionMiddleware',
+     'django.middleware.common.CommonMiddleware',
+ #   'django.middleware.csrf.CsrfViewMiddleware',
+     'django.contrib.auth.middleware.AuthenticationMiddleware',
+     'django.contrib.messages.middleware.MessageMiddleware',
+ #   'django.middleware.clickjacking.XFrameOptionsMiddleware',
+      
+                 ]
 
 
 
