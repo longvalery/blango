@@ -18,13 +18,15 @@ from configurations import values
 import dj_database_url
 
 
-import platform
-DEV_MODE=(platform.node() == 'salutecombine-stadiumbison')
-print("platform.node():",platform.node())
-print("platform.uname()",platform.uname())
-print("DEV_MODE:",DEV_MODE)
+##import platform
+##DEV_MODE=(platform.node() == 'salutecombine-stadiumbison')
+##print("platform.node():",platform.node())
+##print("platform.uname()",platform.uname())
+##print("DEV_MODE:",DEV_MODE)
 
 class Dev(Configuration):
+
+    AUTH_USER_MODEL = "blango_auth.User"
 #
 ## cache to Memory (outside application)
 ## need @sudo apt install memcached"
@@ -142,6 +144,7 @@ class Dev(Configuration):
      'django.contrib.sessions',
      'django.contrib.messages',
      'django.contrib.staticfiles',
+     "blango_auth",
      "blog",
      "crispy_forms",
      "crispy_bootstrap5",

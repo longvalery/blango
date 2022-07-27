@@ -53,32 +53,32 @@ default_cache = caches["default"]
 # print(u is sentinel) #Out: False
 
 
-logging.warning('Watch out!')  # will print a message to the console
-logging.info('I told you so')  # will not print anything
+## logging.warning('Watch out!')  # will print a message to the console
+## logging.info('I told you so')  # will not print anything
 
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-logger.debug('----start messages-----') 
-logger.debug("This is a debug message")
-logger.info("This is an info message")
-logger.warning("This is a warning message")
-logger.error("This is an error message")
-logger.critical("This is a critical message")
+## logger = logging.getLogger(__name__)
+## logger.setLevel(logging.DEBUG)
+## logger.debug('----start messages-----') 
+## logger.debug("This is a debug message")
+## logger.info("This is an info message")
+## logger.warning("This is a warning message")
+## logger.error("This is an error message")
+## logger.critical("This is a critical message")
 
 
-try:
-    answer = 9 / 0
-    print(f"The answer is: {answer}")
-    raise_exception()
-except ZeroDivisionError:
-    logger.exception("!!!! A divide by zero exception occured")
+## try:
+##     answer = 9 / 0
+##     print(f"The answer is: {answer}")
+##     raise_exception()
+## except ZeroDivisionError:
+##     logger.exception("!!!! A divide by zero exception occured")
 
-username="rva"
-email="domino-sender@mail.ru"
-logger.log(logging.DEBUG, "Created user %s with email %s", username, email)
+## username="rva"
+## email="domino-sender@mail.ru"
+## logger.log(logging.DEBUG, "Created user %s with email %s", username, email)
 
-logger.debug('----stop messages-----') 
+## logger.debug('----stop messages-----') 
 
 # For performance reasons, pre-interpolated strings shouldn’t be passed to the logging function.
 # For example, these two lines would produce the same log output:
@@ -87,7 +87,7 @@ logger.debug('----stop messages-----')
 # However, in the first usage, the string is formatted and then sent to the logging function. If the logging level of the logger is not DEBUG then the message will be discarded.
 # In the second call, if the logger level is not DEBUG then the message is discarded before it’s interpolated, thus preventing the (admittedly small) overhead of this operation.
 
-print(f"Time zone: {settings.TIME_ZONE}")
+## print(f"Time zone: {settings.TIME_ZONE}")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -109,17 +109,17 @@ if DEBUG:
   #          'document_root': settings.STATIC_ROOT, })     
   #             ] 
 
-  print("staticfiles_urlpatterns() :",staticfiles_urlpatterns())              
+##   print("staticfiles_urlpatterns() :",staticfiles_urlpatterns())              
 ## urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-  print("static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) :"
-     ,static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))
-  print("static :"
-     ,static("/--/", document_root="/+++/"))     
+##   print("static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) :"
+##      ,static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))
+##   print("static :"
+##      ,static("/--/", document_root="/+++/"))     
   import debug_toolbar
   urlpatterns += [
         path("__debug__/", include(debug_toolbar.urls)),
                ]
 
-print(urlpatterns)
+## print(urlpatterns)
 
 
